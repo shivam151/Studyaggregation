@@ -1,0 +1,127 @@
+// how to find the isactive user and the count of the is the isActive user in the mongodb 
+[
+  {
+    $match: {
+      isActive :true
+    }
+  },
+  {
+    $count: 'isActive'
+  }
+]
+
+// hwo to find the the favorate fruit of the usern in the mongodb
+// This is provide the averageAge of the user.
+
+[
+  {
+    $group: {
+     _id : null,
+      averageAge:{
+        $avg : "$age"
+      }
+    }
+  },
+]
+
+//List of the top furits i the user database.
+//This is give the averageAge of the user using accoding to the gender
+
+[
+  {
+    $group: {
+     _id : "$gender",
+      averageAge:{
+        $avg : "$age"
+      }
+    }
+  },
+]
+
+//this is provide the aggeration for the fovratefurit count in the furits. 
+//and sort them accoding to the accesending or desending order of the data.  
+
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      count :{
+        $sum : 1
+      }
+    },
+  },
+  {
+    $sort: {
+      count: -1//It will help n the sorting of the of the data 
+    }
+  },
+  {
+    $limit: 2//it wiil provide the number of values in the group
+    //The limit value can not be negative number.
+  }
+]
+
+// find the number of male and female in the database.
+[
+  {
+    $group: {
+      _id: "$gender",
+      count :{
+        $sum : 1
+      }
+    },
+  },
+]
+
+//which contrey is the higest number of the register user in the database.
+[
+  {
+    $group: {
+      _id: "$company.location.country",//In this way we can acess the object in the database.
+      count: {
+        $sum: 1,
+      },
+    },
+  },
+]
+
+
+//list all the eyecolour and the sum of the eyecolor in the database
+[
+  {
+    $group: {
+      _id: "$eyeColor",//this will is only provide the grouping of the differnt data
+      count: {
+        $sum: 1,
+      },
+    },
+  },
+
+]
+
+//what is the average number of tags in user array of the database
+
+
+[
+  {
+    $unwind: "$tags"
+  },
+  {
+    $group: {
+      _id :"$_id",
+      numberOfTags:{
+        $sum : 1
+      }  
+    }
+  },
+  {
+    $group: {
+      _id: null ,
+      avgergenumbertags:{
+        $avg :"$numberOfTags"
+      }
+    }
+  }
+  
+]
+
